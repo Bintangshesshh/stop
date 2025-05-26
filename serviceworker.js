@@ -1,10 +1,10 @@
-const cacheName = "stopnpmo-v1";
+const cacheName = "stoppmo-v1";
 const filesToCache = [
   "./",
   "./index.html",
   "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png"
+  "./icon-192.png.png",
+  "./icon-512.png.png"
 ];
 
 self.addEventListener("install", e => {
