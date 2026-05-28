@@ -1,78 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>STOP PMO Tracker</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#4caf50" />
-  <link rel="icon" href="icon-192.png.png" />
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #121212;
-      color: white;
-      text-align: center;
-      padding: 2rem;
-    }
-    .streak {
-      font-size: 2rem;
-      font-weight: bold;
-      margin-top: 1rem;
-    }
-    button {
-      padding: 1rem;
-      background: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      margin-top: 1rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STOP PMO Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
 </head>
-<body>
-  <h1>STOP PMO Tracker</h1>
-  <div>Hari ke-<span id="days"></span></div>
-  <div class="streak">🔥 Streak: <span id="streak">0</span> hari</div>
-  <button onclick="reset()">Reset Progress</button>
+<body class="bg-[#121214] text-gray-200 min-h-screen flex flex-col items-center justify-center p-4">
 
-  <script>
-    const startDateKey = "stopStartDate";
-    const streakKey = "stopStreak";
+    <div class="max-w-md w-full bg-[#202024] rounded-2xl p-6 shadow-2xl border border-gray-800 text-center">
+        
+        <h1 class="text-2xl font-bold text-red-500 tracking-wide uppercase mb-2">STOP PMO Tracker</h1>
+        <p class="text-sm text-gray-400 mb-6">"Kuasai pikiranmu, atau kamu akan dikuasai olehnya."</p>
 
-    const today = new Date().setHours(0, 0, 0, 0);
-    let start = localStorage.getItem(startDateKey);
-    let streak = parseInt(localStorage.getItem(streakKey)) || 0;
+        <div class="bg-[#121214] rounded-xl p-6 mb-6 border border-gray-800">
+            <span class="text-5xl font-extrabold text-white block mb-2" id="streak-count">0</span>
+            <span class="text-sm uppercase tracking-widest text-gray-500 font-semibold">Hari Clean</span>
+        </div>
 
-    if (!start) {
-      start = today;
-      localStorage.setItem(startDateKey, start);
-    }
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-[#29292e] p-3 rounded-lg text-left">
+                <span class="text-xs text-gray-400 block">Status Otak</span>
+                <span class="text-sm font-semibold text-amber-400" id="brain-status">Fase Pemulihan</span>
+            </div>
+            <div class="bg-[#29292e] p-3 rounded-lg text-left">
+                <span class="text-xs text-gray-400 block">Energi Terselamatkan</span>
+                <span class="text-sm font-semibold text-green-400" id="energy-saved">0%</span>
+            </div>
+        </div>
 
-    const daysPassed = Math.floor((today - start) / (1000 * 60 * 60 * 24));
-    document.getElementById("days").textContent = daysPassed;
+        <button onclick="checkIn()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-xl transition duration-200 mb-3 shadow-lg">
+            Selesai Melewati Hari Ini
+        </button>
 
-    if (daysPassed > streak) {
-      streak = daysPassed;
-      localStorage.setItem(streakKey, streak);
-    }
+        <button onclick="triggerReset()" class="text-xs text-gray-500 hover:text-red-400 transition duration-200 underline">
+            Saya khilaf / Reset Progress
+        </button>
 
-    document.getElementById("streak").textContent = streak;
+    </div>
 
-    function reset() {
-      if (confirm("Yakin mau reset?")) {
-        localStorage.setItem(startDateKey, today);
-        localStorage.setItem(streakKey, 0);
-        location.reload();
-      }
-    }
-  </script>
+    <script>
+        let streak = localStorage.getItem('pmo_streak') ? parseInt(localStorage.getItem('pmo_streak')) : 0;
+        
+        function updateUI() {
+            document.getElementById('streak-count').innerText = streak;
+            document.getElementById('energy-saved').innerText = (streak * 5) + "%";
+            if(streak >= 7) {
+                document.getElementById('brain-status').innerText = "Reseptor Membaik";
+            }
+        }
 
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("serviceWorker.js")
-        .then(() => console.log("Service Worker Registered"));
-    }
-  </script>
+        function checkIn() {
+            streak++;
+            localStorage.setItem('pmo_streak', streak);
+            updateUI();
+        }
+
+        function triggerReset() {
+            let yakin = confirm("Bintang, lo beneran mau reset perjuangan lo dari nol lagi?");
+            if (yakin) {
+                streak = 0;
+                localStorage.setItem('pmo_streak', streak);
+                updateUI();
+            }
+        }
+
+        updateUI();
+    </script>
 </body>
 </html>
