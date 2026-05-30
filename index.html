@@ -3,73 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STOP PMO Tracker</title>
+    <title>Buddy's Path | Core RPG Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Poppins', sans-serif; }</style>
 </head>
-<body class="bg-[#121214] text-gray-200 min-h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-[#0f0f11] text-gray-200 min-h-screen flex flex-col items-center justify-center p-4">
 
-    <div class="max-w-md w-full bg-[#202024] rounded-2xl p-6 shadow-2xl border border-gray-800 text-center">
+    <div class="max-w-xl w-full bg-[#16161a] rounded-3xl p-6 shadow-2xl border border-gray-800/60">
         
-        <h1 class="text-2xl font-bold text-red-500 tracking-wide uppercase mb-2">STOP PMO Tracker</h1>
-        <p class="text-sm text-gray-400 mb-6">"Kuasai pikiranmu, atau kamu akan dikuasai olehnya."</p>
-
-        <div class="bg-[#121214] rounded-xl p-6 mb-6 border border-gray-800">
-            <span class="text-5xl font-extrabold text-white block mb-2" id="streak-count">0</span>
-            <span class="text-sm uppercase tracking-widest text-gray-500 font-semibold">Hari Clean</span>
+        <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-6">
+            <h1 class="text-lg font-black tracking-wider text-white uppercase flex items-center gap-2">
+                <span>🐕</span> BUDDY'S PATH <span class="text-red-500 font-normal text-xs px-2 bg-red-500/10 rounded border border-red-500/20">V2.0 HP</span>
+            </h1>
+            <span id="ui-stage-title" class="text-xs bg-indigo-500/10 text-indigo-400 font-bold px-3 py-1 rounded-full border border-indigo-500/20 uppercase tracking-widest">Stage 1</span>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <div class="bg-[#29292e] p-3 rounded-lg text-left">
-                <span class="text-xs text-gray-400 block">Status Otak</span>
-                <span class="text-sm font-semibold text-amber-400" id="brain-status">Fase Pemulihan</span>
+        <div class="bg-[#0f0f11] rounded-2xl p-8 border border-gray-800 text-center mb-6 relative">
+            <div id="ui-avatar" class="text-7xl mb-4 transition-all duration-500">🛌</div>
+            <h2 id="ui-pet-name" class="text-lg font-bold text-white mb-1">Buddy</h2>
+            <p id="ui-pet-status" class="text-xs text-gray-500 max-w-sm mx-auto">Status loading...</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 mb-6">
+            <div class="bg-[#1e1e24] p-3 rounded-xl border border-gray-800 text-center">
+                <span class="text-[10px] text-gray-400 block uppercase">Clean Streak</span>
+                <span id="ui-streak" class="text-2xl font-black text-white">0</span>
+                <span class="text-[9px] text-gray-500 block">HARI</span>
             </div>
-            <div class="bg-[#29292e] p-3 rounded-lg text-left">
-                <span class="text-xs text-gray-400 block">Energi Terselamatkan</span>
-                <span class="text-sm font-semibold text-green-400" id="energy-saved">0%</span>
+            <div class="bg-[#1e1e24] p-3 rounded-xl border border-gray-800 text-center">
+                <span class="text-[10px] text-gray-400 block uppercase">Buddy HP</span>
+                <span id="ui-hp" class="text-2xl font-black text-emerald-400">100</span>
+                <span class="text-[9px] text-gray-500 block">/100</span>
+            </div>
+            <div class="bg-[#1e1e24] p-3 rounded-xl border border-gray-800 text-center">
+                <span class="text-[10px] text-gray-400 block uppercase">Paws Coins</span>
+                <span id="ui-paws" class="text-2xl font-black text-amber-400">0</span>
+                <span class="text-[9px] text-gray-500 block">🐾 COIN</span>
             </div>
         </div>
 
-        <button onclick="checkIn()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-xl transition duration-200 mb-3 shadow-lg">
-            Selesai Melewati Hari Ini
-        </button>
-
-        <button onclick="triggerReset()" class="text-xs text-gray-500 hover:text-red-400 transition duration-200 underline">
-            Saya khilaf / Reset Progress
-        </button>
+        <div class="space-y-3">
+            <button onclick="GameEngine.handleCheckIn()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-4 rounded-xl transition duration-200 transform active:scale-[0.98] shadow-lg">
+                Feed Buddy & Lock The Day 🍖
+            </button>
+            <div class="flex justify-between items-center px-2">
+                <span id="ui-next-feed" class="text-[11px] text-gray-500 font-semibold">Next feed: Ready</span>
+                <button onclick="GameEngine.handleReset()" class="text-xs text-gray-600 hover:text-red-400 underline transition">
+                    Saya Relapse / Reset Game
+                </button>
+            </div>
+        </div>
 
     </div>
 
+    <p class="text-xs text-gray-600 mt-6 tracking-wider uppercase">Project ID: Bintangshesshh / Stop</p>
+
     <script>
-        let streak = localStorage.getItem('pmo_streak') ? parseInt(localStorage.getItem('pmo_streak')) : 0;
-        
-        function updateUI() {
-            document.getElementById('streak-count').innerText = streak;
-            document.getElementById('energy-saved').innerText = (streak * 5) + "%";
-            if(streak >= 7) {
-                document.getElementById('brain-status').innerText = "Reseptor Membaik";
+        // 1. DATA CONFIGURATION (Fase Evolusi)
+        const EVOLUTION_CONFIG = {
+            1: { min: 0, max: 7, avatar: "🛌", title: "The Slacker", desc: "Buddy malas-malasan di kasur. Dia butuh disiplin lo buat bangkit." },
+            2: { min: 8, max: 21, avatar: "🐕", title: "The Adolescent", desc: "Buddy mulai aktif berenergi! Otak lo dalam fase regenerasi sel saraf." },
+            3: { min: 22, max: 89, avatar: "🥷", title: "The Guardian", desc: "Buddy menjadi pelindung tangguh berbaju ninja! Nafsu lo terkendali." },
+            4: { min: 90, max: Infinity, avatar: "👑", title: "The Shiba King", desc: "LEGEND! Buddy bermahkota emas. Selamat atas reset total sistem berpikir lo!" }
+        };
+
+        // 2. STATE MANAGEMENT (Database Browser)
+        let GameState = {
+            streak: 0,
+            paws: 0,
+            hp: 100,
+            lastCheckIn: null,
+
+            load() {
+                this.streak = parseInt(localStorage.getItem('bp_streak')) || 0;
+                this.paws = parseInt(localStorage.getItem('bp_paws')) || 0;
+                this.hp = parseInt(localStorage.getItem('bp_hp')) || 100;
+                this.lastCheckIn = localStorage.getItem('bp_last_checkin') || null;
+            },
+
+            save() {
+                localStorage.setItem('bp_streak', this.streak);
+                localStorage.setItem('bp_paws', this.paws);
+                localStorage.setItem('bp_hp', this.hp);
+                localStorage.setItem('bp_last_checkin', this.lastCheckIn);
             }
-        }
+        };
 
-        function checkIn() {
-            streak++;
-            localStorage.setItem('pmo_streak', streak);
-            updateUI();
-        }
+        // 3. GAME ENGINE & LIFECYCLE CONTROLLER
+        const GameEngine = {
+            init() {
+                GameState.load();
+                this.runLifecycleCheck();
+                this.renderUI();
+            },
 
-        function triggerReset() {
-            let yakin = confirm("Bintang, lo beneran mau reset perjuangan lo dari nol lagi?");
-            if (yakin) {
-                streak = 0;
-                localStorage.setItem('pmo_streak', streak);
-                updateUI();
+            // Cek siklus hidup berdasarkan waktu nyata (Timestamp)
+            runLifecycleCheck() {
+                if (!GameState.lastCheckIn) return;
+
+                const now = new Date();
+                const lastFeed = new Date(GameState.lastCheckIn);
+                
+                // Konversi selisih waktu ke Jam
+                const hoursPassed = Math.floor((now - lastFeed) / (1000 * 60 * 60));
+
+                // Jika sudah lewat 24 jam belum di-feed, HP mulai bocor/berkurang
+                if (hoursPassed >= 24) {
+                    const hpDamage = (hoursPassed - 24) * 2; // 1 jam telat = kurang 2 HP
+                    GameState.hp = Math.max(0, GameState.hp - hpDamage);
+                    
+                    // Kalau HP sampai habis (0), anjing pingsan dan streak mati otomatis
+                    if (GameState.hp === 0) {
+                        GameState.streak = 0;
+                    }
+                    GameState.save();
+                }
+            },
+
+            // Eksekusi Tombol Check-In (Kunci waktu 24 jam)
+            handleCheckIn() {
+                const now = new Date();
+
+                if (GameState.lastCheckIn) {
+                    const lastFeed = new Date(GameState.lastCheckIn);
+                    const hoursSinceLastFeed = (now - lastFeed) / (1000 * 60 * 60);
+
+                    // Kunci tombol kalau belum lewat 24 jam
+                    if (hoursSinceLastFeed < 24) {
+                        const hoursLeft = (24 - hoursSinceLastFeed).toFixed(1);
+                        alert(`⛔ Buddy masih kenyang, Tang! Kasih makan lagi dalam ${hoursLeft} jam ke depan.`);
+                        return;
+                    }
+                }
+
+                // Jika lolos validasi waktu
+                GameState.streak++;
+                GameState.paws += 15; // Reward koin
+                GameState.hp = 100; // Darah full lagi
+                GameState.lastCheckIn = now.toISOString();
+
+                GameState.save();
+                alert("🍖 Nyamm! Buddy makan biskuit. Streak aman untuk 24 jam ke depan!");
+                this.renderUI();
+            },
+
+            // Proteksi Reset dari salah pencet ketukan layar HP
+            handleReset() {
+                const secureCheck = prompt("Ketik 'SAYA MENYERAH' (huruf kapital) untuk mereset game:");
+                if (secureCheck === "SAYA MENYERAH") {
+                    GameState.streak = 0;
+                    GameState.paws = 0;
+                    GameState.hp = 100;
+                    GameState.lastCheckIn = null;
+                    GameState.save();
+                    alert("Sistem dibersihkan total. Jangan menyerah, Tang!");
+                    this.renderUI();
+                }
+            },
+
+            // Update Tampilan Layar HP
+            renderUI() {
+                document.getElementById('ui-streak').innerText = GameState.streak;
+                document.getElementById('ui-hp').innerText = GameState.hp;
+                document.getElementById('ui-paws').innerText = GameState.paws;
+
+                let currentStage = EVOLUTION_CONFIG[1];
+                if (GameState.streak >= 8 && GameState.streak <= 21) currentStage = EVOLUTION_CONFIG[2];
+                else if (GameState.streak >= 22 && GameState.streak <= 89) currentStage = EVOLUTION_CONFIG[3];
+                else if (GameState.streak >= 90) currentStage = EVOLUTION_CONFIG[4];
+
+                if (GameState.hp === 0) {
+                    document.getElementById('ui-avatar').innerText = "💀";
+                    document.getElementById('ui-stage-title').innerText = "DEAD / FAINTED";
+                    document.getElementById('ui-pet-status').innerText = "Buddy pingsan karena lo membiarkan hari terlewat tanpa check-in!";
+                } else {
+                    document.getElementById('ui-avatar').innerText = currentStage.avatar;
+                    document.getElementById('ui-stage-title').innerText = currentStage.title;
+                    document.getElementById('ui-pet-status').innerText = currentStage.desc;
+                }
+
+                // Format info waktu di bawah tombol
+                if (GameState.lastCheckIn) {
+                    const nextFeedDate = new Date(new Date(GameState.lastCheckIn).getTime() + 24 * 60 * 60 * 1000);
+                    document.getElementById('ui-next-feed').innerText = `Next feed: ${nextFeedDate.toLocaleTimeString()}`;
+                } else {
+                    document.getElementById('ui-next-feed').innerText = "Next feed: Ready Now!";
+                }
             }
-        }
+        };
 
-        updateUI();
+        // Booting Aplikasi
+        window.addEventListener('DOMContentLoaded', () => GameEngine.init());
     </script>
 </body>
 </html>
